@@ -18,8 +18,8 @@ A small challenge that involves building a Bingo 90 ticket generator.
 Please make sure you add unit tests to verify the above conditions and an output to view the strips generated (command line is ok).
 
 Try to also think about the performance aspects of your solution. How long does it take to generate 10k strips? The recommended time is less than 1s (with a lightweight random implementation)
-
-
+  
+  
 ## Installation
 ### Pre-requisite
 Please install docker in your workspace.
@@ -39,7 +39,9 @@ docker run lindar/bingo
 And that's it!  
 Now you have the Ticket Generator available on localhost on port 8080.
 
-### Idea behind the Ticket Generator Algorithm
+
+## Implementation
+### Idea behind the Ticket Generator
 The idea through which I have attacked the problem was looking at the different "variations" (permutations) of each range of numbers.  
 The ranges, also called ColumnRange as it spans across all tickets 9 columns, are the group of numbers (1-9, 10-19, 20-29, .., 80-90) which we have 
 to add in our tickets.  
@@ -67,12 +69,14 @@ rows total number of values (which can't be bigger than 5) and potential backtra
 to roll back the latest ticket changes (per column) and restart the algorithm in case of excessive number of values per row.  
 
 Further improvements are required to improve the code quality as some bad practices are present like multiple nested loops.  
-
-### Testing the Ticket Generator
+  
+  
+## Testing
 There is one JUnit Test providing all necessary tests one-click away.  
 Currently, performance is around 5-7 seconds per strip generation.  
 This is not meeting the requirements.
-
-### Notes
+  
+  
+## Notes
 Dockerfile can be adjusted to align with any CI/CD pipeline.
 
