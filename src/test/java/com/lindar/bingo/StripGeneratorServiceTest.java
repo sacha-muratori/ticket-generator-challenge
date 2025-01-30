@@ -1,5 +1,6 @@
 package com.lindar.bingo;
 
+import com.lindar.bingo.helper.StripHelper;
 import com.lindar.bingo.helper.TicketHelper;
 import com.lindar.bingo.model.Ticket;
 import com.lindar.bingo.service.StripGeneratorService;
@@ -22,13 +23,22 @@ public class StripGeneratorServiceTest {
      * Test 1: Verify ticket generation rules for 1 strip
      */
     @Test
-    void testTicketGenerationValidation() {
+    void testTicketGeneration() {
         // Generate one strip
+        StripHelper.displayTickets(stripGeneratorService.generateStrip());
+    }
+
+    /**
+     * Test 2: Verify ticket generation rules for 1 strip
+     */
+    @Test
+    void testTicketGenerationValidation() {
+        // Generate and Validate one strip
         generateAndValidateStrip();
     }
 
     /**
-     * Test 2: Warm-up and performance test for 10 strips
+     * Test 3: Warm-up and performance test for 10 strips
      */
     @Test
     void testPerformanceFor10Strips() {
@@ -37,7 +47,7 @@ public class StripGeneratorServiceTest {
         long startTime = System.nanoTime();
 
         for (int i = 0; i < 10; i++) {
-            generateAndValidateStrip();
+            stripGeneratorService.generateStrip();
         }
 
         long endTime = System.nanoTime();
@@ -47,7 +57,7 @@ public class StripGeneratorServiceTest {
     }
 
     /**
-     * Test 3: Warm-up and performance test for 100 strips
+     * Test 4: Warm-up and performance test for 100 strips
      */
     @Test
     void testPerformanceFor100Strips() {
@@ -56,7 +66,7 @@ public class StripGeneratorServiceTest {
         long startTime = System.nanoTime();
 
         for (int i = 0; i < 100; i++) {
-            generateAndValidateStrip();
+            stripGeneratorService.generateStrip();
         }
 
         long endTime = System.nanoTime();
@@ -66,7 +76,7 @@ public class StripGeneratorServiceTest {
     }
 
     /**
-     * Test 4: Warm-up and performance test for 1k strips
+     * Test 5: Warm-up and performance test for 1k strips
      */
     @Test
     @Ignore
@@ -76,7 +86,7 @@ public class StripGeneratorServiceTest {
         long startTime = System.nanoTime();
 
         for (int i = 0; i < 1_000; i++) {
-            generateAndValidateStrip();
+            stripGeneratorService.generateStrip();
         }
 
         long endTime = System.nanoTime();
@@ -86,7 +96,7 @@ public class StripGeneratorServiceTest {
     }
 
     /**
-     * Test 5: Warm-up and performance test for 10k strips
+     * Test 6: Warm-up and performance test for 10k strips
      */
     @Test
     @Ignore
@@ -96,7 +106,7 @@ public class StripGeneratorServiceTest {
         long startTime = System.nanoTime();
 
         for (int i = 0; i < 10_000; i++) {
-            generateAndValidateStrip();
+            stripGeneratorService.generateStrip();
         }
 
         long endTime = System.nanoTime();
@@ -106,7 +116,7 @@ public class StripGeneratorServiceTest {
     }
 
     /**
-     * Test 6: Performance test for 100k strips
+     * Test 7: Performance test for 100k strips
      */
     @Test
     @Ignore
@@ -116,7 +126,7 @@ public class StripGeneratorServiceTest {
         long startTime = System.nanoTime();
 
         for (int i = 0; i < 100_000; i++) {
-            generateAndValidateStrip();
+            stripGeneratorService.generateStrip();
         }
 
         long endTime = System.nanoTime();
@@ -128,21 +138,21 @@ public class StripGeneratorServiceTest {
     /**
      * Warm-up the JVM by generating a few strips
      */
-    private void generateAndValidateStrip() {
-        List<Ticket> generatedStrip = stripGeneratorService.generateStrip();
-
-        // Validate each ticket in the strip using TicketHelper
-        for (Ticket ticket : generatedStrip) {
-            assertTrue(TicketHelper.hasTicketValidBlankSpaces(ticket), "Invalid blank spaces in ticket.");
-//            assertTrue(TicketHelper.hasTicketValidNumbers(ticket), "Invalid number distribution in ticket.");
-        }
-    }
-
     private void warmUpJvm() {
         System.out.println("Warming up JVM...");
         for (int i = 0; i < 1_000_000; i++) {
             Math.sqrt(i); // Perform some lightweight operation
         }
         System.out.println("JVM warmed up.");
+    }
+
+    private void generateAndValidateStrip() {
+        List<Ticket> generatedStrip = stripGeneratorService.generateStrip();
+
+        // Validate each ticket in the strip using TicketHelper
+        for (Ticket ticket : generatedStrip) {
+            assertTrue(TicketHelper.hasTicketValidBlankSpaces(ticket), "Invalid blank spaces in ticket.");
+            assertTrue(TicketHelper.hasTicketValidNumbers(ticket), "Invalid number distribution in ticket.");
+        }
     }
 }
