@@ -1,10 +1,8 @@
 package com.lindar.bingo;
 
-import com.lindar.bingo.helper.StripHelper;
 import com.lindar.bingo.helper.TicketHelper;
 import com.lindar.bingo.model.Ticket;
 import com.lindar.bingo.service.StripGeneratorService;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,22 +21,19 @@ public class StripGeneratorServiceTest {
      * Test 1: Verify ticket generation rules for 1 strip
      */
     @Test
-    void testTicketGeneration() {
-        // Generate one strip
-        StripHelper.displayTickets(stripGeneratorService.generateStrip());
-    }
-
-    /**
-     * Test 2: Verify ticket generation rules for 1 strip
-     */
-    @Test
     void testTicketGenerationValidation() {
         // Generate and Validate one strip
-        generateAndValidateStrip();
+        List<Ticket> generatedStrip = stripGeneratorService.generateStrip();
+
+        // Validate each ticket in the strip using TicketHelper
+        for (Ticket ticket : generatedStrip) {
+            assertTrue(TicketHelper.hasTicketValidBlankSpaces(ticket), "Invalid blank spaces in ticket.");
+            assertTrue(TicketHelper.hasTicketValidNumbers(ticket), "Invalid number distribution in ticket.");
+        }
     }
 
     /**
-     * Test 3: Warm-up and performance test for 10 strips
+     * Test 2: Warm-up and performance test for 10 strips
      */
     @Test
     void testPerformanceFor10Strips() {
@@ -57,7 +52,7 @@ public class StripGeneratorServiceTest {
     }
 
     /**
-     * Test 4: Warm-up and performance test for 100 strips
+     * Test 3: Warm-up and performance test for 100 strips
      */
     @Test
     void testPerformanceFor100Strips() {
@@ -76,10 +71,9 @@ public class StripGeneratorServiceTest {
     }
 
     /**
-     * Test 5: Warm-up and performance test for 1k strips
+     * Test 4: Warm-up and performance test for 1k strips
      */
     @Test
-    @Ignore
     void testPerformanceFor1kStrips() {
         warmUpJvm();
 
@@ -96,10 +90,9 @@ public class StripGeneratorServiceTest {
     }
 
     /**
-     * Test 6: Warm-up and performance test for 10k strips
+     * Test 5: Warm-up and performance test for 10k strips
      */
     @Test
-    @Ignore
     void testPerformanceFor10kStrips() {
         warmUpJvm();
 
@@ -116,10 +109,9 @@ public class StripGeneratorServiceTest {
     }
 
     /**
-     * Test 7: Performance test for 100k strips
+     * Test 6: Performance test for 100k strips
      */
     @Test
-    @Ignore
     void testPerformanceFor100kStrips() {
         warmUpJvm();
 
@@ -140,19 +132,10 @@ public class StripGeneratorServiceTest {
      */
     private void warmUpJvm() {
         System.out.println("Warming up JVM...");
-        for (int i = 0; i < 1_000_000; i++) {
+        for (int i = 0; i < 1_000_000_000; i++) {
             Math.sqrt(i); // Perform some lightweight operation
+            Object dummy = new Object();
         }
         System.out.println("JVM warmed up.");
-    }
-
-    private void generateAndValidateStrip() {
-        List<Ticket> generatedStrip = stripGeneratorService.generateStrip();
-
-        // Validate each ticket in the strip using TicketHelper
-        for (Ticket ticket : generatedStrip) {
-            assertTrue(TicketHelper.hasTicketValidBlankSpaces(ticket), "Invalid blank spaces in ticket.");
-            assertTrue(TicketHelper.hasTicketValidNumbers(ticket), "Invalid number distribution in ticket.");
-        }
     }
 }

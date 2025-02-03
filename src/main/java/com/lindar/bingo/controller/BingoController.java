@@ -26,6 +26,5 @@ public class BingoController {
     public ResponseEntity<String> generateStrips() {
         List<Ticket> strip = stripGeneratorService.generateStrip();
         return ResponseEntity.ok(StripHelper.displayTickets(strip));
-
     }
 }
