@@ -65,16 +65,11 @@ Based on this number, equal number of rows are selected randomly and equal numbe
 By actual values I refer to the real numbers which end in the ticket.
 
 Due to ROWS and COLUMNS rules and constraint, I have provided additional safe-fail enhancements as keeping track and counting each 
-rows total number of values (which can't be bigger than 5) and potential backtracking, with a maximum of 100 times per column variation, 
-to roll back the latest ticket changes (per column) and restart the algorithm in case of excessive number of values per row.  
-
-Further improvements are required to improve the code quality as some bad practices are present like multiple nested loops.  
-  
+rows total number of values (which can't be bigger than 5) and potential exception handling into a restart of the algorithm in case of excessive number of values per row.  
   
 ## Testing
 There is one JUnit Test providing all necessary tests one-click away.  
-Currently, performance is around 5-7 seconds per strip generation.  
-This is not meeting the requirements.
+Currently, performance is around 500-800 ms per 10k strip generation.
   
   
 ## Notes
